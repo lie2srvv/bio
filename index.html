@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Bio Page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Основные стили в стиле e-z.bio */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', -apple-system, sans-serif;
+            background-color: #0a0a0a; /* Темный фон */
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.03); /* Легкий прозрачный фон */
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px); /* Эффект стекла */
+        }
+
+        .profile-pic {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            margin-bottom: 15px;
+            object-fit: cover;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin: 10px 0 5px 0;
+        }
+
+        p {
+            font-size: 14px;
+            color: #aaaaaa;
+            margin-bottom: 25px;
+        }
+
+        .links {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .link-card {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            text-decoration: none;
+            color: white;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .link-card:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+            border-color: #fff;
+        }
+
+        .link-card i {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+
+        /* Анимация появления */
+        .container {
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <img src="myavatar.jpg" alt="Avatar" class="profile-pic">
+        
+        <h1>lie2srvv</h1>
+        <p>Developer / Schoolboy</p>
+
+        <div class="links">
+            <a href="https://t.me/lie2srvv" class="link-card" target="_blank">
+                <i class="fab fa-telegram"></i> Telegram
+            </a>
+            <a href="https://github.com/lie2srvv" class="link-card" target="_blank">
+                <i class="fab fa-github"></i> GitHub
+            </a>
+            <a href="https://discord.com/lie2srvv" class="link-card" target="_blank">
+                <i class="fab fa-discord"></i> Discord
+            </a>
+        </div>
+    </div>
+
+</
+  body>
+              </html>
