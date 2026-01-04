@@ -11,7 +11,7 @@
             margin: 0;
             padding: 0;
             font-family: 'Press Start 2P', cursive;
-            background-color: #0a0a0a;
+            background-color: #0d0000;
             color: #ffffff;
             display: flex;
             justify-content: center;
@@ -28,11 +28,11 @@
             z-index: 1;
         }
 
-        /* --- CLOUDFLARE --- */
+        /* --- CLOUDFLARE (РЕАЛИСТИЧНЫЙ) --- */
         #verify-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: #0a0a0a;
+            background: #0d0000;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -40,47 +40,63 @@
             transition: opacity 0.8s ease;
         }
 
-        .cf-box {
+        .cf-turnstile-wrapper {
             background: #ffffff;
-            padding: 12px 18px;
-            border-radius: 3px;
+            border-radius: 4px;
+            padding: 0 15px;
+            width: 300px;
+            height: 65px; /* Фиксированная высота как в оригинале */
             display: flex;
             align-items: center;
-            gap: 15px;
-            cursor: pointer;
-            width: 280px;
             justify-content: space-between;
+            cursor: pointer;
+            border: 1px solid #d9d9d9;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
-        .cf-left { display: flex; align-items: center; gap: 12px; }
-        .cf-check-box {
-            width: 26px; height: 26px;
+        .cf-content { display: flex; align-items: center; gap: 12px; }
+
+        .cf-checkbox {
+            width: 28px; height: 28px;
             border: 2px solid #3063f2;
-            border-radius: 2px;
+            border-radius: 3px;
             display: flex; justify-content: center; align-items: center;
+            background: #fff;
         }
+
         .cf-spinner {
             width: 16px; height: 16px;
             border: 2px solid #3063f2; border-top: 2px solid transparent;
             border-radius: 50%; animation: spin 0.8s linear infinite; display: none;
         }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .cf-check-mark { color: #3063f2; font-size: 18px; display: none; }
-        .cf-text { color: #111; font-family: sans-serif; font-size: 14px; }
 
-        /* --- ВОЗВРАТ СТАРОЙ МЕНЮШКИ --- */
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .cf-check {
+            color: #3063f2; font-size: 20px;
+            display: none; opacity: 0; transform: scale(0.5);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .cf-text {
+            color: #000;
+            font-family: -apple-system, system-ui, "Segoe UI", Roboto, sans-serif;
+            font-size: 14px;
+        }
+
+        /* --- ГЛАВНОЕ МЕНЮ (ОГНЕННЫЙ СТИЛЬ) --- */
         .container {
             position: relative;
             z-index: 2;
             width: 90%;
             max-width: 320px;
-            padding: 25px;
+            padding: 30px 20px;
             text-align: center;
-            /* Тот самый легкий стеклянный фон */
-            background: rgba(255, 255, 255, 0.03); 
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 69, 0, 0.07); 
+            border: 1px solid rgba(255, 69, 0, 0.4);
             border-radius: 20px;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(15px);
+            box-shadow: 0 0 30px rgba(255, 69, 0, 0.15);
             display: none;
             opacity: 0;
             animation: fadeIn 0.8s ease-out forwards;
@@ -93,78 +109,68 @@
 
         .profile-pic {
             width: 90px; height: 90px;
-            border-radius: 50%;
-            border: 2px solid #fff;
-            margin-bottom: 15px;
-            object-fit: cover;
-            image-rendering: pixelated;
+            border-radius: 50%; border: 2px solid #ff4500;
+            margin-bottom: 15px; object-fit: cover; image-rendering: pixelated;
         }
 
-        h1 { font-size: 14px; margin: 10px 0 5px 0; color: #ffff55; }
-        p { font-size: 8px; color: #aaaaaa; margin-bottom: 25px; }
+        h1 { font-size: 14px; margin: 10px 0 5px 0; color: #ffcc00; text-shadow: 2px 2px #550000; }
+        p { font-size: 8px; color: #ffaa88; margin-bottom: 25px; }
 
-        .links { display: flex; flex-direction: column; gap: 12px; margin-bottom: 25px; }
-        
+        .links { display: flex; flex-direction: column; gap: 12px; margin-bottom: 30px; }
+
         .link-card {
             display: flex; align-items: center; justify-content: center;
-            padding: 12px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            text-decoration: none; color: white;
-            font-size: 9px; transition: all 0.3s ease;
+            padding: 12px; background: rgba(255, 69, 0, 0.1);
+            border: 1px solid rgba(255, 69, 0, 0.2); border-radius: 10px;
+            text-decoration: none; color: white; font-size: 9px; transition: all 0.3s ease;
         }
 
         .link-card:hover {
-            background: #7ca43b;
-            transform: translateY(-2px);
-            border-color: #fff;
-            color: #ffff55;
+            background: rgba(255, 69, 0, 0.3); border-color: #ff4500; color: #ffcc00; transform: scale(1.02);
         }
 
         .link-card i { margin-right: 10px; font-size: 14px; }
 
-        /* Плеер в стиле "стекла" */
         .player-container {
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 15px;
-            margin-top: 10px;
+            background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(255, 69, 0, 0.3);
+            border-radius: 15px; padding: 15px;
         }
 
-        .player-title { font-size: 7px; margin-bottom: 12px; color: #888; }
+        .player-title { font-size: 7px; margin-bottom: 12px; color: #ffaa88; }
         .btn-play {
-            background: #444; border: 1px solid #000; color: white;
-            padding: 6px 12px; cursor: pointer; font-family: 'Press Start 2P';
-            font-size: 8px; margin-bottom: 15px;
+            background: #ff4500; border: none; color: white; padding: 8px 15px;
+            cursor: pointer; font-family: 'Press Start 2P'; font-size: 8px;
+            margin-bottom: 15px; box-shadow: 0 4px 0 #882200;
         }
 
-        .control-header { display: flex; justify-content: space-between; margin-bottom: 5px; }
-        .control-label, .time-display { font-size: 6px; color: #666; }
+        .control-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+        .control-label, .time-display { font-size: 6px; color: #ffaa88; }
 
-        input[type="range"] { -webkit-appearance: none; width: 100%; height: 3px; background: #222; outline: none; }
-        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 8px; height: 8px; background: #ffff55; cursor: pointer; }
+        input[type="range"] { -webkit-appearance: none; width: 100%; height: 4px; background: #441100; outline: none; }
+        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 10px; height: 10px; background: #ffcc00; cursor: pointer; }
     </style>
 </head>
 <body>
 
     <div id="verify-screen">
-        <div class="cf-box" onclick="runVerify()">
-            <div class="cf-left">
-                <div class="cf-check-box">
-                    <div class="cf-spinner" id="loader"></div>
-                    <i class="fas fa-check cf-check-mark" id="ok-mark"></i>
+        <div class="cf-turnstile-wrapper" onclick="handleVerify()">
+            <div class="cf-content">
+                <div class="cf-checkbox">
+                    <div class="cf-spinner" id="spinner"></div>
+                    <i class="fas fa-check cf-check" id="check-mark"></i>
                 </div>
-                <div class="cf-text" id="status-txt">Verify you are human</div>
+                <div class="cf-text" id="verify-txt">Verify you are human</div>
             </div>
-            <img src="https://upload.wikimedia.org/wikipedia/commons/4/4b/Cloudflare_Logo.svg" width="55">
+            <div style="text-align: right; display: flex; flex-direction: column; align-items: flex-end;">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/4/4b/Cloudflare_Logo.svg" width="55">
+                <span style="font-family: sans-serif; font-size: 8px; color: #999; margin-top: 2px;">Privacy • Terms</span>
+            </div>
         </div>
     </div>
 
     <div id="particles-js"></div>
 
-    <div class="container" id="content">
+    <div class="container" id="main-content">
         <img src="myavatar.png" alt="Avatar" class="profile-pic">
         <h1>lie2srvv</h1>
         <p>Developer / Schoolboy</p>
@@ -182,7 +188,7 @@
 
             <div class="control-header">
                 <span class="control-label">PROGRESS</span>
-                <span class="time-display" id="timeShow">00:00 / 00:00</span>
+                <span class="time-display" id="timeDisplay">00:00 / 00:00</span>
             </div>
             <input type="range" id="progressBar" value="0" max="100" oninput="seek()">
         </div>
@@ -190,40 +196,65 @@
 
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
-        // Анимация Титула
-        const text = "lie2srvv's bio"; let idx = 0; let del = false;
-        function animTitle() {
-            document.title = text.substring(0, idx);
-            if(!del && idx <= text.length) { idx++; if(idx > text.length) { del=true; setTimeout(animTitle, 3000); return; } }
-            else { idx--; if(idx < 0) { del=false; idx=0; } }
-            setTimeout(animTitle, del ? 100 : 200);
-        }
-        animTitle();
+        // --- ТИТУЛ (С ЗАЩИТОЙ ОТ ПУСТОТЫ) ---
+        const titleText = "lie2srvv's bio";
+        let currentIndex = 0; let isDeleting = false;
 
-        // Проверка Cloudflare
-        function runVerify() {
-            document.getElementById('loader').style.display = 'block';
-            document.getElementById('status-txt').innerText = 'Verifying...';
+        function animateTitle() {
+            // Если currentIndex < 1 при удалении, ставим пробел, чтобы не вылезал домен
+            let currentDisplay = titleText.substring(0, currentIndex);
+            document.title = currentDisplay.length === 0 ? "\u200E" : currentDisplay;
+
+            if (!isDeleting && currentIndex <= titleText.length) {
+                currentIndex++;
+                if (currentIndex > titleText.length) { isDeleting = true; setTimeout(animateTitle, 3000); return; }
+                setTimeout(animateTitle, 200);
+            } else if (isDeleting && currentIndex >= 0) {
+                currentIndex--;
+                if (currentIndex < 0) { isDeleting = false; currentIndex = 0; setTimeout(animateTitle, 500); return; }
+                setTimeout(animateTitle, 100);
+            }
+        }
+        animateTitle();
+
+        // --- CLOUDFLARE ---
+        function handleVerify() {
+            const spinner = document.getElementById('spinner');
+            const check = document.getElementById('check-mark');
+            const txt = document.getElementById('verify-txt');
+            const screen = document.getElementById('verify-screen');
+            const main = document.getElementById('main-content');
+            const audio = document.getElementById('myAudio');
+
+            spinner.style.display = 'block';
+            txt.innerText = 'Verifying...';
+
             setTimeout(() => {
-                document.getElementById('loader').style.display = 'none';
-                document.getElementById('ok-mark').style.display = 'block';
-                document.getElementById('status-txt').innerText = 'Success!';
+                spinner.style.display = 'none';
+                check.style.display = 'block';
+                setTimeout(() => { 
+                    check.style.opacity = '1'; 
+                    check.style.transform = 'scale(1)'; 
+                    txt.innerText = 'Success!';
+                }, 10);
+
                 setTimeout(() => {
-                    document.getElementById('verify-screen').style.opacity = '0';
+                    screen.style.opacity = '0';
                     setTimeout(() => {
-                        document.getElementById('verify-screen').style.display = 'none';
-                        const c = document.getElementById('content');
-                        c.style.display = 'block'; setTimeout(() => c.style.opacity = '1', 50);
-                        const a = document.getElementById('myAudio'); a.volume = 0.3; a.play();
+                        screen.style.display = 'none';
+                        main.style.display = 'block';
+                        setTimeout(() => main.style.opacity = '1', 50);
+                        audio.volume = 0.3; // Громкость 30%
+                        audio.play();
                     }, 800);
                 }, 1000);
             }, 1500);
         }
 
-        // Частицы (те самые летящие вверх искры)
+        // --- ОГНЕННЫЕ ЧАСТИЦЫ ---
         particlesJS("particles-js", {
             "particles": {
-                "number": { "value": 80 },
+                "number": { "value": 90 },
                 "color": { "value": ["#ff4500", "#ffcc00", "#ff0000"] },
                 "shape": { "type": "circle" },
                 "opacity": { "value": 0.5, "random": true },
@@ -232,14 +263,30 @@
             }
         });
 
-        // Плеер
+        // --- ПЛЕЕР ---
         const audio = document.getElementById('myAudio');
-        function format(s) { if(isNaN(s)) return "00:00"; let m=Math.floor(s/60); s=Math.floor(s%60); return `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`; }
-        function togglePlay() { if(audio.paused) { audio.play(); document.getElementById('playBtn').innerText="PAUSE"; } else { audio.pause(); document.getElementById('playBtn').innerText="PLAY"; } }
-        function seek() { audio.currentTime = (document.getElementById('progressBar').value/100)*audio.duration; }
+        const playBtn = document.getElementById('playBtn');
+        const progressBar = document.getElementById('progressBar');
+        const timeDisplay = document.getElementById('timeDisplay');
+
+        function formatTime(s) {
+            if (isNaN(s)) return "00:00";
+            let m = Math.floor(s / 60); s = Math.floor(s % 60);
+            return `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+        }
+
+        function togglePlay() {
+            if (audio.paused) { audio.play(); playBtn.innerText = "PAUSE"; }
+            else { audio.pause(); playBtn.innerText = "PLAY"; }
+        }
+
+        function seek() { if (audio.duration) audio.currentTime = (progressBar.value / 100) * audio.duration; }
+        
         audio.ontimeupdate = () => {
-            document.getElementById('progressBar').value = (audio.currentTime/audio.duration)*100 || 0;
-            document.getElementById('timeShow').innerText = `${format(audio.currentTime)} / ${format(audio.duration)}`;
+            if (audio.duration) {
+                progressBar.value = (audio.currentTime / audio.duration) * 100;
+                timeDisplay.innerText = `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`;
+            }
         };
     </script>
 </body>
