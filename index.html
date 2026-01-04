@@ -29,51 +29,78 @@
             z-index: 1;
         }
 
+        /* --- РЕАЛИСТИЧНЫЙ CLOUDFLARE --- */
         #verify-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background: #0d0000;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 999;
-            transition: opacity 0.5s ease;
+            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .verify-box {
-            background: #1a1a1a;
-            border: 1px solid #333;
-            padding: 20px;
-            border-radius: 5px;
+        .cf-turnstile-wrapper {
+            background: #ffffff;
+            border-radius: 4px;
+            padding: 10px 15px;
+            width: 300px;
+            height: 65px;
             display: flex;
             align-items: center;
-            gap: 15px;
+            justify-content: space-between;
             cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            border: 1px solid #d9d9d9;
         }
 
-        .checkbox {
-            width: 24px;
-            height: 24px;
-            border: 2px solid #555;
+        .cf-content { display: flex; align-items: center; gap: 12px; }
+
+        .cf-checkbox {
+            width: 28px;
+            height: 28px;
+            border: 2px solid #3063f2;
             border-radius: 3px;
+            position: relative;
             display: flex;
             justify-content: center;
             align-items: center;
             background: #fff;
         }
 
-        .checkbox i {
-            color: #0052cc;
-            font-size: 18px;
+        /* Анимация крутилки (spinner) */
+        .cf-spinner {
+            width: 18px;
+            height: 18px;
+            border: 2px solid #3063f2;
+            border-top: 2px solid transparent;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
             display: none;
         }
 
-        .verify-text {
-            font-size: 10px;
-            font-family: sans-serif;
-            color: #eee;
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* Плавная галочка */
+        .cf-check {
+            color: #3063f2;
+            font-size: 20px;
+            display: none;
+            opacity: 0;
+            transform: scale(0.5);
+            transition: all 0.3s ease;
         }
 
+        .cf-text {
+            color: #000;
+            font-family: -apple-system, system-ui, "Segoe UI", Roboto, sans-serif;
+            font-size: 14px;
+            font-weight: 400;
+        }
+
+        /* --- ГЛАВНЫЙ КОНТЕНТ --- */
         .container {
             position: relative;
             z-index: 2;
@@ -87,12 +114,7 @@
             backdrop-filter: blur(15px);
             box-shadow: 0 0 30px rgba(255, 69, 0, 0.15);
             display: none;
-            animation: fadeIn 0.8s ease-out forwards;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            opacity: 0;
         }
 
         .profile-pic {
@@ -105,110 +127,43 @@
             image-rendering: pixelated;
         }
 
-        h1 {
-            font-size: 14px;
-            margin: 10px 0 5px 0;
-            color: #ffcc00;
-            text-shadow: 2px 2px #550000;
-        }
+        h1 { font-size: 14px; margin: 10px 0 5px 0; color: #ffcc00; text-shadow: 2px 2px #550000; }
+        p { font-size: 8px; color: #ffaa88; margin-bottom: 25px; }
 
-        p {
-            font-size: 8px;
-            color: #ffaa88;
-            margin-bottom: 25px;
-        }
-
-        .links {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-bottom: 30px;
-        }
-
+        .links { display: flex; flex-direction: column; gap: 12px; margin-bottom: 30px; }
         .link-card {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 12px;
-            background: rgba(255, 69, 0, 0.1);
-            border: 1px solid rgba(255, 69, 0, 0.2);
-            border-radius: 10px;
-            text-decoration: none;
-            color: white;
-            font-size: 9px;
-            transition: all 0.3s ease;
+            display: flex; align-items: center; justify-content: center; padding: 12px;
+            background: rgba(255, 69, 0, 0.1); border: 1px solid rgba(255, 69, 0, 0.2);
+            border-radius: 10px; text-decoration: none; color: white; font-size: 9px; transition: all 0.3s ease;
         }
+        .link-card:hover { background: rgba(255, 69, 0, 0.3); border-color: #ff4500; color: #ffcc00; transform: scale(1.02); }
 
-        .link-card:hover {
-            background: rgba(255, 69, 0, 0.3);
-            border-color: #ff4500;
-            color: #ffcc00;
-            transform: scale(1.02);
-        }
+        .player-container { background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(255, 69, 0, 0.3); border-radius: 15px; padding: 15px; }
+        .player-title { font-size: 7px; margin-bottom: 12px; color: #ffaa88; }
+        .btn-play { background: #ff4500; border: none; color: white; padding: 8px 15px; cursor: pointer; font-family: 'Press Start 2P'; font-size: 8px; margin-bottom: 15px; box-shadow: 0 4px 0 #882200; }
+        
+        .control-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+        .control-label, .time-display { font-size: 6px; color: #ffaa88; }
 
-        .link-card i { margin-right: 10px; font-size: 14px; }
-
-        .player-container {
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 69, 0, 0.3);
-            border-radius: 15px;
-            padding: 15px;
-        }
-
-        .player-title {
-            font-size: 7px;
-            margin-bottom: 12px;
-            color: #ffaa88;
-        }
-
-        .btn-play {
-            background: #ff4500;
-            border: none;
-            color: white;
-            padding: 8px 15px;
-            cursor: pointer;
-            font-family: 'Press Start 2P';
-            font-size: 8px;
-            margin-bottom: 15px;
-            box-shadow: 0 4px 0 #882200;
-        }
-
-        .control-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 5px;
-        }
-
-        .control-label, .time-display {
-            font-size: 6px;
-            color: #ffaa88;
-        }
-
-        input[type="range"] {
-            -webkit-appearance: none;
-            width: 100%;
-            height: 4px;
-            background: #441100;
-            outline: none;
-        }
-
-        input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 10px;
-            height: 10px;
-            background: #ffcc00;
-            cursor: pointer;
-        }
+        input[type="range"] { -webkit-appearance: none; width: 100%; height: 4px; background: #441100; outline: none; }
+        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 10px; height: 10px; background: #ffcc00; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <div id="verify-screen" onclick="startVerification()">
-        <div class="verify-box">
-            <div class="checkbox" id="check-icon"><i class="fas fa-check"></i></div>
-            <div class="verify-text">Verify you are human</div>
-            <img src="https://www.cloudflare.com/img/logo-cloudflare-dark.svg" width="60" style="margin-left:10px">
+    <div id="verify-screen">
+        <div class="cf-turnstile-wrapper" onclick="handleVerify()">
+            <div class="cf-content">
+                <div class="cf-checkbox">
+                    <div class="cf-spinner" id="spinner"></div>
+                    <i class="fas fa-check cf-check" id="check-mark"></i>
+                </div>
+                <div class="cf-text" id="verify-txt">Verify you are human</div>
+            </div>
+            <div style="text-align: right; display: flex; flex-direction: column; align-items: flex-end;">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/4/4b/Cloudflare_Logo.svg" width="55">
+                <span style="font-family: sans-serif; font-size: 8px; color: #999; margin-top: 2px;">Privacy • Terms</span>
+            </div>
         </div>
     </div>
 
@@ -259,32 +214,47 @@
         }
         animateTitle();
 
-        function startVerification() {
-            const check = document.querySelector('#check-icon i');
+        function handleVerify() {
+            const spinner = document.getElementById('spinner');
+            const check = document.getElementById('check-mark');
+            const txt = document.getElementById('verify-txt');
             const screen = document.getElementById('verify-screen');
             const main = document.getElementById('main-content');
             const audio = document.getElementById('myAudio');
-            
-            check.style.display = 'block';
+
+            spinner.style.display = 'block';
+            txt.innerText = 'Verifying...';
+
             setTimeout(() => {
-                screen.style.opacity = '0';
+                spinner.style.display = 'none';
+                check.style.display = 'block';
+                setTimeout(() => { 
+                    check.style.opacity = '1'; 
+                    check.style.transform = 'scale(1)'; 
+                    txt.innerText = 'Success!';
+                }, 10);
+
                 setTimeout(() => {
-                    screen.style.display = 'none';
-                    main.style.display = 'block';
-                    audio.volume = 0.3; // Фиксированная громкость 30%
-                    audio.play();
-                }, 500);
-            }, 800);
+                    screen.style.opacity = '0';
+                    setTimeout(() => {
+                        screen.style.display = 'none';
+                        main.style.display = 'block';
+                        setTimeout(() => main.style.opacity = '1', 50);
+                        audio.volume = 0.3;
+                        audio.play();
+                    }, 800);
+                }, 1000);
+            }, 1500);
         }
 
         particlesJS("particles-js", {
             "particles": {
-                "number": { "value": 100 },
+                "number": { "value": 90 },
                 "color": { "value": ["#ff4500", "#ffcc00", "#ff0000"] },
                 "shape": { "type": "circle" },
-                "opacity": { "value": 0.6, "random": true },
-                "size": { "value": 2.5, "random": true },
-                "move": { "enable": true, "speed": 2.5, "direction": "top", "random": true, "out_mode": "out" }
+                "opacity": { "value": 0.5, "random": true },
+                "size": { "value": 3, "random": true },
+                "move": { "enable": true, "speed": 2.2, "direction": "top", "random": true, "out_mode": "out" }
             }
         });
 
@@ -293,11 +263,10 @@
         const progressBar = document.getElementById('progressBar');
         const timeDisplay = document.getElementById('timeDisplay');
 
-        function formatTime(seconds) {
-            if (isNaN(seconds)) return "00:00";
-            const mins = Math.floor(seconds / 60);
-            const secs = Math.floor(seconds % 60);
-            return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        function formatTime(s) {
+            if (isNaN(s)) return "00:00";
+            let m = Math.floor(s / 60); s = Math.floor(s % 60);
+            return `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
         }
 
         function togglePlay() {
@@ -305,20 +274,13 @@
             else { audio.pause(); playBtn.innerText = "PLAY"; }
         }
 
-        function seek() { 
-            if (audio.duration) audio.currentTime = (progressBar.value / 100) * audio.duration; 
-        }
-
-        audio.ontimeupdate = function() {
+        function seek() { if (audio.duration) audio.currentTime = (progressBar.value / 100) * audio.duration; }
+        
+        audio.ontimeupdate = () => {
             if (audio.duration) {
                 progressBar.value = (audio.currentTime / audio.duration) * 100;
                 timeDisplay.innerText = `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`;
             }
-        };
-
-        // Обновляем общую длительность при загрузке трека
-        audio.onloadedmetadata = function() {
-            timeDisplay.innerText = `00:00 / ${formatTime(audio.duration)}`;
         };
     </script>
 </body>
