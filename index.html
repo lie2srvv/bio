@@ -10,25 +10,37 @@
         body {
             margin: 0;
             padding: 0;
-            /* Установлен шрифт Minecraft */
             font-family: 'Press Start 2P', cursive;
-            background-color: #0a0a0a;
+            background-color: #0d0000;
             color: #ffffff;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            overflow: hidden;
+        }
+
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1;
         }
 
         .container {
-            width: 100%;
-            max-width: 400px;
+            position: relative;
+            z-index: 2;
+            width: 90%;
+            max-width: 320px;
             padding: 30px 20px;
             text-align: center;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 69, 0, 0.07); 
+            border: 1px solid rgba(255, 69, 0, 0.4);
             border-radius: 20px;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(15px);
+            box-shadow: 0 0 30px rgba(255, 69, 0, 0.15);
             animation: fadeIn 0.8s ease-out;
         }
 
@@ -38,24 +50,25 @@
         }
 
         .profile-pic {
-            width: 100px;
-            height: 100px;
+            width: 90px;
+            height: 90px;
             border-radius: 50%;
-            border: 2px solid #fff;
+            border: 2px solid #ff4500;
             margin-bottom: 15px;
             object-fit: cover;
             image-rendering: pixelated;
         }
 
         h1 {
-            font-size: 16px;
+            font-size: 14px;
             margin: 10px 0 5px 0;
-            color: #ffff55; /* Желтый ник как в Minecraft */
+            color: #ffcc00;
+            text-shadow: 2px 2px #550000;
         }
 
         p {
             font-size: 8px;
-            color: #aaaaaa;
+            color: #ffaa88;
             margin-bottom: 25px;
         }
 
@@ -71,87 +84,77 @@
             align-items: center;
             justify-content: center;
             padding: 12px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
+            background: rgba(255, 69, 0, 0.1);
+            border: 1px solid rgba(255, 69, 0, 0.2);
+            border-radius: 10px;
             text-decoration: none;
             color: white;
-            font-size: 10px;
+            font-size: 9px;
             transition: all 0.3s ease;
         }
 
         .link-card:hover {
-            background: #7ca43b; /* Зеленый при наведении */
-            transform: translateY(-2px);
-            border-color: #fff;
-            color: #ffff55;
+            background: rgba(255, 69, 0, 0.3);
+            border-color: #ff4500;
+            color: #ffcc00;
+            transform: scale(1.02);
         }
 
-        .link-card i {
-            margin-right: 10px;
-            font-size: 14px;
-        }
+        .link-card i { margin-right: 10px; font-size: 14px; }
 
-        /* Стиль плеера */
         .player-container {
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 69, 0, 0.3);
             border-radius: 15px;
             padding: 15px;
-            margin-top: 10px;
         }
 
         .player-title {
-            font-size: 8px;
-            margin-bottom: 15px;
-            color: #888;
+            font-size: 7px;
+            margin-bottom: 12px;
+            color: #ffaa88;
         }
 
         .btn-play {
-            background: #444;
-            border: 1px solid #000;
+            background: #ff4500;
+            border: none;
             color: white;
-            padding: 8px 12px;
+            padding: 8px 15px;
             cursor: pointer;
             font-family: 'Press Start 2P';
             font-size: 8px;
             margin-bottom: 15px;
+            box-shadow: 0 4px 0 #882200;
         }
 
-        .btn-play:hover {
-            background: #7ca43b;
+        .btn-play:active {
+            box-shadow: 0 0 0;
+            transform: translateY(4px);
         }
 
-        .control-group {
-            text-align: left;
-            margin-bottom: 10px;
-        }
-
-        .control-label {
-            font-size: 7px;
-            color: #666;
-            margin-bottom: 5px;
-            display: block;
-        }
+        .control-group { text-align: left; margin-bottom: 10px; }
+        .control-label { font-size: 6px; color: #ffaa88; margin-bottom: 5px; display: block; }
 
         input[type="range"] {
             -webkit-appearance: none;
             width: 100%;
             height: 4px;
-            background: #222;
+            background: #441100;
             outline: none;
-            cursor: pointer;
         }
 
         input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
             width: 10px;
             height: 10px;
-            background: #ffff55;
+            background: #ffcc00;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
+
+    <div id="particles-js"></div>
 
     <div class="container">
         <img src="myavatar.png" alt="Avatar" class="profile-pic">
@@ -169,19 +172,16 @@
         </div>
 
         <div class="player-container">
-            <div class="player-title">NOW PLAYING: Music</div>
-            
-            <audio id="myAudio">
+            <div class="player-title">NOW PLAYING: Music.exe</div>
+            <audio id="myAudio" loop autoplay>
                 <source src="background.mp3" type="audio/mpeg">
             </audio>
-
-            <button class="btn-play" onclick="togglePlay()" id="playBtn">PLAY</button>
+            <button class="btn-play" onclick="togglePlay()" id="playBtn">PAUSE</button>
 
             <div class="control-group">
                 <span class="control-label">PROGRESS</span>
                 <input type="range" id="progressBar" value="0" max="100" oninput="seek()">
             </div>
-
             <div class="control-group">
                 <span class="control-label">VOLUME</span>
                 <input type="range" id="volumeBar" value="50" max="100" oninput="setVolume()">
@@ -189,40 +189,79 @@
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
+        // --- ДИНАМИЧЕСКИЙ ТИТУЛ ---
+        const titleText = "lie2srvv's bio";
+        let currentIndex = 0;
+        let isDeleting = false;
+
+        function animateTitle() {
+            if (!isDeleting && currentIndex <= titleText.length) {
+                document.title = titleText.substring(0, currentIndex);
+                currentIndex++;
+                
+                if (currentIndex > titleText.length) {
+                    isDeleting = true;
+                    setTimeout(animateTitle, 3000); // Пауза 3 сек когда текст напечатан
+                    return;
+                }
+                setTimeout(animateTitle, 200); // Скорость печати
+            } else if (isDeleting && currentIndex >= 0) {
+                document.title = titleText.substring(0, currentIndex);
+                currentIndex--;
+
+                if (currentIndex < 0) {
+                    isDeleting = false;
+                    currentIndex = 0;
+                    setTimeout(animateTitle, 500); // Небольшая пауза перед новым циклом
+                    return;
+                }
+                setTimeout(animateTitle, 100); // Скорость стирания
+            }
+        }
+        animateTitle();
+
+        // --- ЧАСТИЦЫ ---
+        particlesJS("particles-js", {
+            "particles": {
+                "number": { "value": 100 },
+                "color": { "value": ["#ff4500", "#ffcc00", "#ff0000"] },
+                "shape": { "type": "circle" },
+                "opacity": { "value": 0.6, "random": true },
+                "size": { "value": 2.5, "random": true },
+                "line_linked": { "enable": false },
+                "move": {
+                    "enable": true,
+                    "speed": 2.5,
+                    "direction": "top",
+                    "random": true,
+                    "straight": false,
+                    "out_mode": "out"
+                }
+            }
+        });
+
+        // --- ПЛЕЕР ---
         const audio = document.getElementById('myAudio');
         const playBtn = document.getElementById('playBtn');
         const progressBar = document.getElementById('progressBar');
         const volumeBar = document.getElementById('volumeBar');
+        audio.volume = 0.5;
 
         function togglePlay() {
-            if (audio.paused) {
-                audio.play();
-                playBtn.innerText = "PAUSE";
-            } else {
-                audio.pause();
-                playBtn.innerText = "PLAY";
-            }
+            if (audio.paused) { audio.play(); playBtn.innerText = "PAUSE"; }
+            else { audio.pause(); playBtn.innerText = "PLAY"; }
         }
-
-        function setVolume() {
-            audio.volume = volumeBar.value / 100;
-        }
-
-        function seek() {
-            if (audio.duration) {
-                const time = (progressBar.value / 100) * audio.duration;
-                audio.currentTime = time;
-            }
-        }
-
+        function setVolume() { audio.volume = volumeBar.value / 100; }
+        function seek() { if (audio.duration) audio.currentTime = (progressBar.value / 100) * audio.duration; }
         audio.ontimeupdate = function() {
-            if (audio.duration) {
-                const val = (audio.currentTime / audio.duration) * 100;
-                progressBar.value = val;
-            }
+            if (audio.duration) progressBar.value = (audio.currentTime / audio.duration) * 100;
         };
-    </script>
 
+        document.body.addEventListener('click', function() {
+            if (audio.paused) { audio.play(); playBtn.innerText = "PAUSE"; }
+        }, { once: true });
+    </script>
 </body>
 </html>
