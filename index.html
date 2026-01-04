@@ -3,14 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Bio Page</title>
+    <title>lie2srvv Bio</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
         body {
             margin: 0;
             padding: 0;
-            font-family: 'Inter', -apple-system, sans-serif;
-            background-color: #0a0a0a; /* Темный фон */
+            /* Установлен шрифт Minecraft */
+            font-family: 'Press Start 2P', cursive;
+            background-color: #0a0a0a;
             color: #ffffff;
             display: flex;
             justify-content: center;
@@ -21,12 +23,18 @@
         .container {
             width: 100%;
             max-width: 400px;
-            padding: 20px;
+            padding: 30px 20px;
             text-align: center;
-            background: rgba(255, 255, 255, 0.03); /* Легкий прозрачный фон */
+            background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 20px;
-            backdrop-filter: blur(10px); /* Эффект стекла */
+            backdrop-filter: blur(10px);
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .profile-pic {
@@ -36,15 +44,17 @@
             border: 2px solid #fff;
             margin-bottom: 15px;
             object-fit: cover;
+            image-rendering: pixelated;
         }
 
         h1 {
-            font-size: 24px;
+            font-size: 16px;
             margin: 10px 0 5px 0;
+            color: #ffff55; /* Желтый ник как в Minecraft */
         }
 
         p {
-            font-size: 14px;
+            font-size: 8px;
             color: #aaaaaa;
             margin-bottom: 25px;
         }
@@ -53,6 +63,7 @@
             display: flex;
             flex-direction: column;
             gap: 12px;
+            margin-bottom: 30px;
         }
 
         .link-card {
@@ -65,29 +76,78 @@
             border-radius: 12px;
             text-decoration: none;
             color: white;
-            font-weight: 500;
+            font-size: 10px;
             transition: all 0.3s ease;
         }
 
         .link-card:hover {
-            background: rgba(255, 255, 255, 0.1);
+            background: #7ca43b; /* Зеленый при наведении */
             transform: translateY(-2px);
             border-color: #fff;
+            color: #ffff55;
         }
 
         .link-card i {
             margin-right: 10px;
-            font-size: 18px;
+            font-size: 14px;
         }
 
-        /* Анимация появления */
-        .container {
-            animation: fadeIn 0.8s ease-out;
+        /* Стиль плеера */
+        .player-container {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 15px;
+            margin-top: 10px;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        .player-title {
+            font-size: 8px;
+            margin-bottom: 15px;
+            color: #888;
+        }
+
+        .btn-play {
+            background: #444;
+            border: 1px solid #000;
+            color: white;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-family: 'Press Start 2P';
+            font-size: 8px;
+            margin-bottom: 15px;
+        }
+
+        .btn-play:hover {
+            background: #7ca43b;
+        }
+
+        .control-group {
+            text-align: left;
+            margin-bottom: 10px;
+        }
+
+        .control-label {
+            font-size: 7px;
+            color: #666;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 4px;
+            background: #222;
+            outline: none;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 10px;
+            height: 10px;
+            background: #ffff55;
         }
     </style>
 </head>
@@ -101,17 +161,68 @@
 
         <div class="links">
             <a href="https://t.me/lie2srvv" class="link-card" target="_blank">
-                <i class="fab fa-telegram"></i> Telegram
+                <i class="fab fa-telegram"></i> TELEGRAM
             </a>
             <a href="https://github.com/lie2srvv" class="link-card" target="_blank">
-                <i class="fab fa-github"></i> GitHub
+                <i class="fab fa-github"></i> GITHUB
             </a>
-            <a href="https://discord.com/lie2srvv" class="link-card" target="_blank">
-                <i class="fab fa-discord"></i> Discord
-            </a>
+        </div>
+
+        <div class="player-container">
+            <div class="player-title">NOW PLAYING: Music</div>
+            
+            <audio id="myAudio">
+                <source src="background.mp3" type="audio/mpeg">
+            </audio>
+
+            <button class="btn-play" onclick="togglePlay()" id="playBtn">PLAY</button>
+
+            <div class="control-group">
+                <span class="control-label">PROGRESS</span>
+                <input type="range" id="progressBar" value="0" max="100" oninput="seek()">
+            </div>
+
+            <div class="control-group">
+                <span class="control-label">VOLUME</span>
+                <input type="range" id="volumeBar" value="50" max="100" oninput="setVolume()">
+            </div>
         </div>
     </div>
 
-</
-  body>
-              </html>
+    <script>
+        const audio = document.getElementById('myAudio');
+        const playBtn = document.getElementById('playBtn');
+        const progressBar = document.getElementById('progressBar');
+        const volumeBar = document.getElementById('volumeBar');
+
+        function togglePlay() {
+            if (audio.paused) {
+                audio.play();
+                playBtn.innerText = "PAUSE";
+            } else {
+                audio.pause();
+                playBtn.innerText = "PLAY";
+            }
+        }
+
+        function setVolume() {
+            audio.volume = volumeBar.value / 100;
+        }
+
+        function seek() {
+            if (audio.duration) {
+                const time = (progressBar.value / 100) * audio.duration;
+                audio.currentTime = time;
+            }
+        }
+
+        audio.ontimeupdate = function() {
+            if (audio.duration) {
+                const val = (audio.currentTime / audio.duration) * 100;
+                progressBar.value = val;
+            }
+        };
+    </script>
+
+</body>
+</html>
