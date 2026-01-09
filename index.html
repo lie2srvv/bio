@@ -3,130 +3,405 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>lie2srvv Bio</title>
+    <title>lie2srvv | Bio</title>
+    <link rel="icon" type="image/png" href="myavatar.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; 
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-touch-callout: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --bg-deep: #0a0000;
+            --bg-gradient: radial-gradient(ellipse at 25% 15%, #1a0a0a 0%, #0a0000 50%, #000000 100%);
+            --accent: #ff4500;
+            --accent-glow: rgba(255, 69, 0, 0.5);
+            --accent-light: #ff6a00;
+            --text-main: #ffffff;
+            --text-muted: #ffaa88;
+            --glass-bg: rgba(15, 5, 5, 0.7);
+            --glass-border: rgba(255, 69, 0, 0.15);
+            --card-radius: 20px;
+            --retro-yellow: #ffcc00;
+        }
+
         body {
-            margin: 0; padding: 0;
-            font-family: 'Press Start 2P', cursive;
-            background-color: #080000;
-            color: #ffffff;
-            display: flex; justify-content: center; align-items: center;
-            min-height: 100vh; overflow: hidden;
+            background: var(--bg-deep);
+            background-image: var(--bg-gradient);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            padding: 20px;
+            position: relative;
         }
 
-        #particles-js {
-            position: absolute; width: 100%; height: 100%;
-            top: 0; left: 0; z-index: 1;
-        }
-
-        /* --- CLOUDFLARE --- */
-        #verify-screen {
+        .noise-layer {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #080000; display: flex; justify-content: center; align-items: center;
-            z-index: 999; transition: opacity 0.8s ease;
+            background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MDAiIGhlaWdodD0iNTAwIj48ZmlsdGVyIGlkPSJnoiPjxmZVR1cmJ1bGVuY2UgdHlwZT0iZnJhY3RhbE5vaXNlIiBiYXNlRnJlcXVlbmN5PSIwLjY1IiBudW1PY3RhdmVzPSIzIiBzdGl0Y2hUaWxlcz0ic3RpdGNoIi8+PC9maWx0ZXI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsdGVyPSJ1cmwoI2cpIiBvcGFjaXR5PSIwLjAzIi8+PC9zdmc+');
+            opacity: 0.15; pointer-events: none; z-index: 1;
         }
 
-        .cf-turnstile-wrapper {
-            background: #ffffff; border-radius: 4px; padding: 0 15px;
-            width: 300px; height: 65px; display: flex; align-items: center;
-            justify-content: space-between; cursor: pointer; border: 1px solid #d9d9d9;
+        canvas#particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; }
+
+        .main-container {
+            width: 100%; max-width: 900px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            z-index: 10;
+            position: relative;
         }
 
-        .cf-content { display: flex; align-items: center; gap: 12px; }
-        .cf-checkbox {
-            width: 28px; height: 28px; border: 2px solid #3063f2; border-radius: 3px;
-            display: flex; justify-content: center; align-items: center; background: #fff;
+        .glass-card {
+            background: linear-gradient(135deg, var(--glass-bg), rgba(10, 0, 0, 0.8));
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--card-radius);
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            transition: 0.3s ease;
+            position: relative; overflow: hidden;
         }
-        .cf-spinner {
-            width: 16px; height: 16px; border: 2px solid #3063f2; border-top: 2px solid transparent;
-            border-radius: 50%; animation: spin 0.8s linear infinite; display: none;
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            opacity: 0.5;
         }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .cf-check { color: #3063f2; font-size: 20px; display: none; opacity: 0; transform: scale(0.5); transition: 0.3s; }
-        .cf-text { color: #000; font-family: sans-serif; font-size: 14px; }
+        .glass-card:hover { 
+            border-color: rgba(255, 69, 0, 0.3); 
+            box-shadow: 0 20px 45px rgba(255, 69, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
 
-        /* --- CONTAINER --- */
-        .container {
-            position: relative; z-index: 2; width: 90%; max-width: 320px;
-            padding: 30px 20px; text-align: center;
-            background: rgba(20, 0, 0, 0.6); 
-            border: 1px solid rgba(255, 69, 0, 0.3);
-            border-radius: 20px; backdrop-filter: blur(12px);
-            box-shadow: 0 0 40px rgba(255, 30, 0, 0.2);
-            display: none; opacity: 0; animation: fadeIn 0.8s ease-out forwards;
+        .header-card { 
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 30px;
+            text-align: left;
+        }
+        
+        .text-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
         }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-        .profile-pic-wrapper {
-            position: relative; width: 100px; height: 100px; margin: 0 auto 15px auto;
+        .avatar-container { 
+            position: relative; 
+            width: 120px; height: 120px; 
+            flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center; 
         }
-        .profile-pic {
-            width: 100%; height: 100%; border-radius: 50%;
-            border: 2px solid #ff4500; object-fit: cover;
+        
+        .avatar {
+            width: 120px; height: 120px;
+            border-radius: 50%; object-fit: cover;
             position: relative; z-index: 3;
+            border: 2px solid var(--accent);
+            box-shadow: 0 0 30px rgba(255, 69, 0, 0.3);
+            transition: 0.3s ease;
         }
+        .avatar:hover { transform: scale(1.05); box-shadow: 0 0 60px rgba(255, 69, 0, 0.6); }
+
         .fire-glow {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            border-radius: 50%; background: radial-gradient(circle, #ff4500 0%, transparent 70%);
-            filter: blur(10px); z-index: 2;
+            border-radius: 50%; background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+            filter: blur(15px); z-index: 2;
             animation: firePulse 2s infinite alternate;
         }
         @keyframes firePulse { 
-            0% { transform: scale(0.95); opacity: 0.5; box-shadow: 0 0 10px #ff0000; } 
-            100% { transform: scale(1.1); opacity: 0.8; box-shadow: 0 0 30px #ff6a00; } 
+            0% { transform: scale(0.95); opacity: 0.4; box-shadow: 0 0 20px var(--accent); } 
+            100% { transform: scale(1.15); opacity: 0.7; box-shadow: 0 0 40px var(--accent-light); } 
         }
 
-        h1 { font-size: 14px; margin: 10px 0 5px 0; color: #ffcc00; text-shadow: 2px 2px #550000; }
-        p { font-size: 8px; color: #ffaa88; margin-bottom: 25px; }
+        .orbit-system {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 150px; height: 150px;
+            z-index: 1; pointer-events: none;
+        }
 
-        .links { display: flex; flex-direction: column; gap: 12px; margin-bottom: 30px; }
+        .orbit-ring {
+            position: absolute; top: 50%; left: 50%;
+            border-radius: 50%;
+        }
+
+        .ring-inner {
+            width: 135px; height: 135px;
+            border: 1px solid transparent;
+            border-top: 1px solid var(--accent);
+            border-bottom: 1px solid var(--accent);
+            animation: spin-cw 8s linear infinite;
+        }
+
+        .ring-outer {
+            width: 150px; height: 150px;
+            border: 1px dotted rgba(255, 69, 0, 0.2);
+            animation: spin-ccw 20s linear infinite;
+        }
+
+        h1 { 
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1.4rem; 
+            font-weight: 800; 
+            margin-bottom: 15px; 
+            color: var(--retro-yellow); 
+            text-shadow: 2px 2px #550000;
+            letter-spacing: -0.5px; 
+            display: block;
+        }
+        
+        .micro-bio {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text-muted); 
+            font-size: 0.8rem;
+            background: rgba(255, 69, 0, 0.08);
+            padding: 8px 14px; 
+            border-radius: 10px;
+            border: 1px solid rgba(255, 69, 0, 0.2);
+            font-weight: 600;
+            margin-top: 0;
+            display: inline-block;
+        }
+
+        .details-card { display: flex; flex-direction: column; gap: 20px; }
+
+        .about-text {
+            color: var(--text-muted); 
+            font-size: 1rem; 
+            line-height: 1.6;
+            margin-bottom: 10px; 
+            font-weight: 500;
+        }
+
+        .info-row {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 20px;
+            background: linear-gradient(135deg, rgba(25, 5, 5, 0.3), rgba(15, 0, 0, 0.5));
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-left: 3px solid transparent; 
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative; overflow: hidden;
+        }
+
+        .info-row:hover {
+            background: linear-gradient(90deg, rgba(255, 69, 0, 0.1), transparent);
+            border-left-color: var(--accent);
+            border-color: rgba(255, 69, 0, 0.3);
+            transform: translateX(6px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .info-row::after {
+            content: ''; position: absolute;
+            top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 69, 0, 0.15), transparent);
+            transform: skewX(-25deg); transition: 0.5s; pointer-events: none;
+        }
+        .info-row:hover::after { left: 150%; }
+
+        .label { 
+            color: var(--text-main); 
+            font-weight: 700; 
+            font-size: 0.95rem; 
+            flex-shrink: 0;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .code-value {
+            font-family: 'JetBrains Mono', monospace; 
+            font-size: 0.9rem;
+            color: var(--text-muted); 
+            transition: 0.3s;
+            text-align: right;
+        }
+        .info-row:hover .code-value { 
+            color: var(--accent); 
+            text-shadow: 0 0 12px var(--accent-glow); 
+        }
+
+        .neon-text { 
+            color: var(--accent); 
+            text-shadow: 0 0 12px var(--accent-glow); 
+            font-weight: 700; 
+        }
+
+        .section-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.7rem; 
+            text-transform: uppercase; 
+            letter-spacing: 2px;
+            color: var(--text-muted); 
+            margin-top: 20px; 
+            margin-left: 10px;
+            font-weight: 700; 
+            opacity: 0.7;
+        }
+
+        .links-grid {
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 20px;
+        }
+
         .link-card {
-            display: flex; align-items: center; justify-content: center; padding: 12px;
-            background: rgba(255, 69, 0, 0.1); border: 1px solid rgba(255, 69, 0, 0.2);
-            border-radius: 10px; text-decoration: none; color: white; font-size: 9px; transition: 0.3s;
+            padding: 14px; 
+            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.005));
+            border: 1px solid rgba(255, 69, 0, 0.15);
+            color: var(--text-main); 
+            text-decoration: none; 
+            text-align: center;
+            font-weight: 700; 
+            font-size: 0.75rem;
+            font-family: 'Press Start 2P', cursive;
+            transition: 0.3s; 
+            position: relative; 
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
-        .link-card:hover { background: rgba(255, 69, 0, 0.3); border-color: #ff4500; color: #ffcc00; transform: scale(1.02); }
-        .link-card i { margin-right: 10px; font-size: 14px; }
 
-        /* --- ОБНОВЛЕННЫЙ ПЛЕЕР --- */
+        .link-card:hover { 
+            border-color: var(--accent); 
+            color: var(--retro-yellow); 
+            box-shadow: 0 0 25px rgba(255, 69, 0, 0.3); 
+            transform: translateY(-2px); 
+            background: rgba(255, 69, 0, 0.1);
+        }
+        .link-card:hover::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 69, 0, 0.15), transparent);
+            transform: skewX(-20deg) translateX(100%);
+            animation: shine 0.5s;
+        }
+        .link-card i { font-size: 1.2rem; }
+
+        @keyframes shine { from { transform: skewX(-20deg) translateX(-150%); } to { transform: skewX(-20deg) translateX(150%); } }
+        .easter-egg-btn {
+            background: linear-gradient(135deg, var(--accent), var(--accent-light));
+            border: none;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.7rem;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .easter-egg-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 69, 0, 0.4);
+            background: linear-gradient(135deg, var(--accent-light), var(--accent));
+        }
+        .easter-egg-btn:active {
+            transform: translateY(0);
+        }
+        .easter-egg-btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+        .easter-egg-btn:hover::before {
+            left: 100%;
+        }
+
+        @keyframes spin-cw { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
+        @keyframes spin-ccw { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(-360deg); } }
+
         .player-container { 
             background: rgba(0, 0, 0, 0.6); 
-            border: 1px solid rgba(255, 69, 0, 0.25); 
-            border-radius: 15px; padding: 15px; 
+            border: 1px solid rgba(255, 69, 0, 0.3); 
+            border-radius: 15px; 
+            padding: 20px; 
+            margin-top: 25px;
+            flex-grow: 1;
         }
-        .player-title { font-size: 7px; margin-bottom: 12px; color: #ffaa88; }
+        .player-title { 
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.7rem; 
+            margin-bottom: 15px; 
+            color: var(--text-muted); 
+            text-align: center;
+        }
         .btn-play { 
-            background: #ff4500; border: none; color: white; padding: 8px 15px; 
-            cursor: pointer; font-family: 'Press Start 2P'; font-size: 8px; 
-            margin-bottom: 15px; box-shadow: 0 4px 0 #882200; 
+            background: linear-gradient(135deg, rgba(255, 69, 0, 0.2), rgba(255, 69, 0, 0.1)); 
+            border: 1px solid rgba(255, 69, 0, 0.3); 
+            color: var(--text-muted); 
+            padding: 10px 20px; 
+            cursor: pointer; 
+            font-family: 'Press Start 2P'; 
+            font-size: 0.7rem; 
+            margin-bottom: 15px; 
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            width: 100%;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
-        .control-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-        .control-label, .time-display { font-size: 6px; color: #ffaa88; }
+        .btn-play:hover { 
+            background: linear-gradient(135deg, rgba(255, 69, 0, 0.3), rgba(255, 69, 0, 0.2)); 
+            border-color: var(--accent);
+            color: var(--accent);
+            transform: translateY(-1px); 
+        }
+        .btn-play:active { 
+            transform: translateY(0); 
+        }
+        
+        .control-header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 10px; 
+        }
+        .control-label, .time-display { 
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem; 
+            color: var(--text-muted); 
+        }
 
-        /* СТИЛИЗАЦИЯ ПОЛЗУНКА */
         input[type="range"] {
             -webkit-appearance: none;
             width: 100%;
             height: 4px;
-            background: rgba(255, 69, 0, 0.1);
+            background: rgba(255, 69, 0, 0.2);
             border-radius: 5px;
             outline: none;
             cursor: pointer;
         }
 
-        /* Красивая круглая точка (для Chrome/Safari/Edge) */
         input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
-            width: 12px;
-            height: 12px;
-            background: #ffcc00;
+            width: 14px;
+            height: 14px;
+            background: var(--retro-yellow);
             border-radius: 50%;
             cursor: pointer;
-            box-shadow: 0 0 10px #ff4500, 0 0 5px #fff;
+            box-shadow: 0 0 10px var(--accent), 0 0 5px #fff;
             transition: 0.2s ease-in-out;
         }
 
@@ -135,123 +410,201 @@
             background: #ffffff;
         }
 
-        /* Красивая круглая точка (для Firefox) */
         input[type="range"]::-moz-range-thumb {
-            width: 12px;
-            height: 12px;
-            background: #ffcc00;
+            width: 14px;
+            height: 14px;
+            background: var(--retro-yellow);
             border: none;
             border-radius: 50%;
             cursor: pointer;
-            box-shadow: 0 0 10px #ff4500, 0 0 5px #fff;
+            box-shadow: 0 0 10px var(--accent), 0 0 5px #fff;
+        }
+
+        .footer {
+            margin-top: 20px; 
+            grid-column: span 2; 
+            text-align: center;
+            font-size: 0.8rem; 
+            color: rgba(255,255,255,0.2);
+            font-family: 'JetBrains Mono', monospace; 
+            padding-top: 25px;
+        }
+
+        @media (max-width: 900px) {
+            .main-wrapper { grid-template-columns: 1fr; max-width: 450px; gap: 20px; }
+            .footer { grid-column: span 1; }
+            .header-card { min-height: auto; padding: 40px 30px; }
+            .details-card { padding: 30px; }
+            h1 { font-size: 1.5rem; }
+            .links-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
-    <div id="verify-screen">
-        <div class="cf-turnstile-wrapper" onclick="handleVerify()">
-            <div class="cf-content">
-                <div class="cf-checkbox">
-                    <div class="cf-spinner" id="spinner"></div>
-                    <i class="fas fa-check cf-check" id="check-mark"></i>
+    <div class="noise-layer"></div>
+    <canvas id="particles"></canvas>
+
+    <div class="main-container">
+        <div class="glass-card header-card">
+            <div class="avatar-container">
+                <div class="orbit-system">
+                    <div class="orbit-ring ring-inner"></div>
+                    <div class="orbit-ring ring-outer"></div>
                 </div>
-                <div class="cf-text" id="verify-txt">Verify you are human</div>
+                <div class="fire-glow"></div>
+                <img src="myavatar.png" alt="Avatar" class="avatar">
             </div>
-            <img src="https://upload.wikimedia.org/wikipedia/commons/4/4b/Cloudflare_Logo.svg" width="55">
+            <div class="text-container">
+                <h1>lie2srvv</h1>
+                <p class="micro-bio">&lt; Developer / Schoolboy &gt;</p>
+            </div>
+
+            <div class="player-container">
+                <div class="player-title">NOW PLAYING: Music.exe</div>
+                <audio id="myAudio" loop><source src="background.mp3" type="audio/mpeg"></audio>
+                <button class="btn-play" onclick="togglePlay()" id="playBtn">PAUSE</button>
+                <div class="control-header">
+                    <span class="control-label">PROGRESS</span>
+                    <span class="time-display" id="timeDisplay">00:00 / 00:00</span>
+                </div>
+                <input type="range" id="progressBar" value="0" max="100" oninput="seek()">
+            </div>
+        </div>
+
+        <div class="glass-card details-card">
+            <div class="about-text">
+                My code works, I don't know why.
+            </div>
+
+            <div class="info-row">
+                <span class="label">Identity</span>
+                <span class="code-value neon-text">lie2srvv</span>
+            </div>
+
+            <div class="info-row">
+                <span class="label">Location</span>
+                <span class="code-value">Russia</span>
+            </div>
+            
+            <div class="info-row">
+                <span class="label">Stack</span>
+                <span class="code-value">Python, C++, JS, HTML</span>
+            </div>
+
+            <div class="section-title">LINKS</div>
+            <div class="links-grid">
+                <a href="https://t.me/lie2srvv" class="link-card" target="_blank">
+                    <i class="fab fa-telegram"></i>
+                    <span>TELEGRAM</span>
+                </a>
+                <a href="https://www.twitch.tv/lie2srvv" class="link-card" target="_blank">
+                    <i class="fab fa-twitch"></i>
+                    <span>TWITCH</span>
+                </a>
+                <a href="https://lie2srvv.github.io" class="link-card" target="_blank">
+                    <i class="fas fa-paint-brush"></i>
+                    <span>PAINT</span>
+                </a>
+                <a href="https://github.com/lie2srvv" class="link-card" target="_blank">
+                    <i class="fab fa-github"></i>
+                    <span>GITHUB</span>
+                </a>
+            </div>
+
+            </div>
+
+        <div class="footer">
+            &copy; 2026 @lie2srvv
         </div>
     </div>
 
-    <div id="particles-js"></div>
-
-    <div class="container" id="main-content">
-        <div class="profile-pic-wrapper">
-            <div class="fire-glow"></div>
-            <img src="myavatar.png" alt="Avatar" class="profile-pic">
-        </div>
-        
-        <h1>lie2srvv</h1>
-        <p>Developer / Schoolboy</p>
-
-        <div class="links">
-            <a href="https://t.me/lie2survive" class="link-card" target="_blank"><i class="fab fa-telegram"></i> TELEGRAM</a>
-            <a href="https://www.twitch.tv/lie2srvv" class="link-card" target="_blank"><i class="fab fa-twitch"></i> TWITCH</a>
-            <a href="https://lie2srvv.github.io" class="link-card" target="_blank"><i class="fas fa-paint-brush"></i> PAINT</a>
-        </div>
-
-        <div class="player-container">
-            <div class="player-title">NOW PLAYING: Music.exe</div>
-            <audio id="myAudio" loop><source src="background.mp3" type="audio/mpeg"></audio>
-            <button class="btn-play" onclick="togglePlay()" id="playBtn">PAUSE</button>
-            <div class="control-header">
-                <span class="control-label">PROGRESS</span>
-                <span class="time-display" id="timeDisplay">00:00 / 00:00</span>
-            </div>
-            <input type="range" id="progressBar" value="0" max="100" oninput="seek()">
-        </div>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
-        const titleText = "lie2srvv's bio";
-        let currentIndex = 0; let isDeleting = false;
-        function animateTitle() {
-            let currentDisplay = titleText.substring(0, currentIndex);
-            document.title = currentDisplay.length === 0 ? "\u200E" : currentDisplay;
-            if (!isDeleting && currentIndex <= titleText.length) {
-                currentIndex++;
-                if (currentIndex > titleText.length) { isDeleting = true; setTimeout(animateTitle, 3000); return; }
-                setTimeout(animateTitle, 200);
-            } else if (isDeleting && currentIndex >= 0) {
-                currentIndex--;
-                if (currentIndex < 0) { isDeleting = false; currentIndex = 0; setTimeout(animateTitle, 500); return; }
-                setTimeout(animateTitle, 100);
+        const titles = ["lie2srvv | Bio", "Developer", "Creating...", "lie2srvv"];
+        let titleIndex = 0;
+        setInterval(() => {
+            document.title = titles[titleIndex];
+            titleIndex = (titleIndex + 1) % titles.length;
+        }, 3000);
+
+        // Particle system
+        const canvas = document.getElementById('particles');
+        const ctx = canvas.getContext('2d');
+        let width, height, particles = [];
+        const particleCount = 60;
+        let mouse = { x: null, y: null, radius: 250 };
+
+        window.addEventListener('mousemove', (e) => { mouse.x = e.x; mouse.y = e.y; });
+        function resize() { width = canvas.width = window.innerWidth; height = canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resize); resize();
+
+        class Particle {
+            constructor() { this.reset(); }
+            reset() {
+                this.x = Math.random() * width; this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.3; this.vy = (Math.random() - 0.5) * 0.3 - 0.1;
+                this.size = Math.random() * 3 + 0.5; this.alpha = Math.random() * 0.4 + 0.1; this.fade = Math.random() * 0.01 + 0.005;
+            }
+            update() {
+                if (mouse.x != null) {
+                    let dx = mouse.x - this.x, dy = mouse.y - this.y, distance = Math.sqrt(dx*dx + dy*dy);
+                    if (distance < mouse.radius) {
+                        const force = (mouse.radius - distance) / mouse.radius;
+                        this.x -= (dx/distance) * force * 1.5; this.y -= (dy/distance) * force * 1.5;
+                    }
+                }
+                this.x += this.vx; this.y += this.vy; this.alpha += this.fade;
+                if (this.alpha > 0.5 || this.alpha < 0.1) this.fade = -this.fade;
+                if (this.y < 0 || this.x < 0 || this.x > width) this.reset();
+            }
+            draw() {
+                ctx.fillStyle = `rgba(255, 69, 0, ${this.alpha})`;
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
             }
         }
-        animateTitle();
+        function init() { particles = []; for(let i=0; i<particleCount; i++) particles.push(new Particle()); }
+        function animate() { ctx.clearRect(0,0,width,height); particles.forEach(p=>{p.update(); p.draw();}); requestAnimationFrame(animate); }
+        init(); animate();
 
-        function handleVerify() {
-            const spinner = document.getElementById('spinner');
-            const check = document.getElementById('check-mark');
-            const txt = document.getElementById('verify-txt');
-            const screen = document.getElementById('verify-screen');
-            const main = document.getElementById('main-content');
-            const audio = document.getElementById('myAudio');
-            spinner.style.display = 'block'; txt.innerText = 'Verifying...';
-            setTimeout(() => {
-                spinner.style.display = 'none'; check.style.display = 'block';
-                setTimeout(() => { check.style.opacity = '1'; check.style.transform = 'scale(1)'; txt.innerText = 'Success!'; }, 10);
-                setTimeout(() => {
-                    screen.style.opacity = '0';
-                    setTimeout(() => {
-                        screen.style.display = 'none'; main.style.display = 'block';
-                        setTimeout(() => main.style.opacity = '1', 50);
-                        audio.volume = 0.3; audio.play();
-                    }, 800);
-                }, 1000);
-            }, 1500);
-        }
-
-        particlesJS("particles-js", {
-            "particles": {
-                "number": { "value": 60, "density": { "enable": true, "value_area": 800 } },
-                "color": { "value": ["#ff4500", "#ff8c00", "#ff0000"] },
-                "shape": { "type": "circle" },
-                "opacity": { "value": 0.4, "random": true, "anim": { "enable": true, "speed": 1, "opacity_min": 0.1, "sync": false } },
-                "size": { "value": 4, "random": true, "anim": { "enable": true, "speed": 2, "size_min": 0.1, "sync": false } },
-                "line_linked": { "enable": false },
-                "move": { "enable": true, "speed": 1.5, "direction": "top", "random": true, "out_mode": "out" }
-            }
-        });
-
+        // Audio player
         const audio = document.getElementById('myAudio');
         const playBtn = document.getElementById('playBtn');
         const progressBar = document.getElementById('progressBar');
         const timeDisplay = document.getElementById('timeDisplay');
-        function formatTime(s) { if (isNaN(s)) return "00:00"; let m = Math.floor(s/60); s = Math.floor(s%60); return `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`; }
-        function togglePlay() { if (audio.paused) { audio.play(); playBtn.innerText = "PAUSE"; } else { audio.pause(); playBtn.innerText = "PLAY"; } }
-        function seek() { if (audio.duration) audio.currentTime = (progressBar.value / 100) * audio.duration; }
-        audio.ontimeupdate = () => { if (audio.duration) { progressBar.value = (audio.currentTime / audio.duration) * 100; timeDisplay.innerText = `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`; } };
+        
+        function formatTime(s) { 
+            if (isNaN(s)) return "00:00"; 
+            let m = Math.floor(s/60); 
+            s = Math.floor(s%60); 
+            return `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`; 
+        }
+        
+        function togglePlay() { 
+            if (audio.paused) { 
+                audio.play(); 
+                playBtn.innerText = "PAUSE"; 
+            } else { 
+                audio.pause(); 
+                playBtn.innerText = "PLAY"; 
+            } 
+        }
+        
+        function seek() { 
+            if (audio.duration) audio.currentTime = (progressBar.value / 100) * audio.duration; 
+        }
+        
+        audio.ontimeupdate = () => { 
+            if (audio.duration) { 
+                progressBar.value = (audio.currentTime / audio.duration) * 100; 
+                timeDisplay.innerText = `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`; 
+            } 
+        };
+
+        // Auto-start music with low volume
+        window.addEventListener('load', () => {
+            audio.volume = 0.3;
+            audio.play().catch(e => console.log('Auto-play prevented'));
+        });
     </script>
 </body>
 </html>
